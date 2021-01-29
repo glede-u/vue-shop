@@ -13,8 +13,8 @@
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <div class="toggle-button" @click="togglechange">|||</div>
-        <!-- collapse这是element提供的是否折叠 -->
-        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" unique-opened :collapse="isCollapse" :collapse-transition="false" >
+        <!-- collapse这是element提供的是否折叠  router开启路由模式 default-active的值是对应的index值的时候能保持高亮 -->
+        <el-menu background-color="#333744" text-color="#fff" active-text-color="#409EFF" unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active='activePath'>
           <!-- 一级菜单 -->
           <el-submenu :index='item.id+""'  v-for="item in menulist" :key="item.id" >
             <!-- 一级菜单的模板区域 -->
@@ -26,7 +26,9 @@
             </template>
 
             <!-- 二级菜单 -->
-            <el-menu-item :index="subItem.id+''" v-for="subItem in item.children" :key="subItem.id" >
+            <!-- 给每一个子菜单注册点击事件,然后把index的值保证到本地存储中 -->
+            <el-menu-item :index="'/'+subItem.path" v-for="subItem in item.children" :key="subItem.id" 
+            @click="saveNavActive('/'+subItem.path)" >
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-menu"></i>
@@ -50,6 +52,7 @@ export default {
   name: "",
   created () {
     this.getMenuList()
+    this.activePath=window.sessionStorage.getItem('activePath')
   },
   data() {
     return {
@@ -61,7 +64,8 @@ export default {
         '102': 'iconfont icon-danju',
         '145': 'iconfont icon-baobiao'
       },
-      isCollapse:false
+      isCollapse:false,
+      activePath:''
       
     };
   },
@@ -79,6 +83,10 @@ export default {
     },
     togglechange(){
       this.isCollapse = ! this.isCollapse
+    },
+    saveNavActive(path){
+      window.sessionStorage.setItem('activePath',path)
+      this.activePath= window.sessionStorage.getItem('activePath')
     }
   },
 };
