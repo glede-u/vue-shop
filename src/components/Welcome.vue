@@ -5,12 +5,16 @@
 </template>
 
 <script>
+import hub from '../utils/hub.js'
 export default {
   name: '',
 
   data () {
     return {
     }
+  },
+  created() {
+    hub.$emit('saveNavActive', '')
   },
 
   methods: {}

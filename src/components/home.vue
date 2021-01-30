@@ -48,11 +48,18 @@
 </template>
 
 <script>
+import hub from '../utils/hub'
 export default {
   name: "",
   created () {
     this.getMenuList()
     this.activePath=window.sessionStorage.getItem('activePath')
+     // 定义一个事件监听，事件监听里面做 2 件事情，改变 activePath 和 本地的 sessionStorage,利用事件处理中心监听saveNavActive事件
+    hub.$on('saveNavActive', this.saveNavActive)
+  },
+  beforeDestroy(){
+   // 移除事件监听，防止监听多次
+    hub.$off('saveNavActive')
   },
   data() {
     return {
