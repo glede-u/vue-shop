@@ -12,7 +12,7 @@
           ><el-input placeholder="请输入内容"> <el-button slot="append" icon="el-icon-search"></el-button> </el-input
         ></el-col>
         <el-col :span="6">
-          <el-button type="primary" @click="dialogVisible = true">添加用户</el-button>
+          <el-button type="primary" @click="dialogVisible = true">添加权限</el-button>
         </el-col>
       </el-row>
       <!-- 表格 -->
