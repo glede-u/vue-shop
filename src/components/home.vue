@@ -50,7 +50,7 @@
 <script>
 import hub from '../utils/hub'
 export default {
-  name: "",
+  name: "home",
   created () {
     this.getMenuList()
     this.activePath=window.sessionStorage.getItem('activePath')

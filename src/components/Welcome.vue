@@ -7,7 +7,7 @@
 <script>
 import hub from '../utils/hub.js'
 export default {
-  name: '',
+  name: 'Welcome',
 
   data () {
     return {
