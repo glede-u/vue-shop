@@ -6,15 +6,6 @@
       <el-breadcrumb-item>权限列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-card>
-      <!-- 搜索框 -->
-      <el-row :gutter="20">
-        <el-col :span="8"
-          ><el-input placeholder="请输入内容"> <el-button slot="append" icon="el-icon-search"></el-button> </el-input
-        ></el-col>
-        <el-col :span="6">
-          <el-button type="primary" @click="dialogVisible = true">添加权限</el-button>
-        </el-col>
-      </el-row>
       <!-- 表格 -->
       <el-table :data="RightList" style="width: 100%" border stripe>
         <el-table-column prop="authName" label="权限名称" > </el-table-column>
