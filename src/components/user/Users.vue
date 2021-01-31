@@ -219,8 +219,8 @@ export default {
       this.$refs.addFormRef.validate(async (valid) => {
         if (!valid) return;
         const { data: res } = await this.$http.post("users", this.addForm);
-        if (res.meta.status !== 201) return this.$message.error("登录失败!");
-        this.$message.success("登录成功");
+        if (res.meta.status !== 201) return this.$message.error("添加用户失败!");
+        this.$message.success("添加用户成功");
         this.getUserList();
         this.dialogVisible = false;
       });
@@ -239,7 +239,7 @@ export default {
       this.$refs.editFormRef.resetFields();
     },
     //提交修改后的事件
-    editUser(id) {
+    editUser() {
       this.$refs.editFormRef.validate(async (valid) => {
         if (!valid) return;
         const { data: res } = await this.$http.put("users/" + this.editForm.id, { email: this.editForm.email, mobile: this.editForm.mobile });
