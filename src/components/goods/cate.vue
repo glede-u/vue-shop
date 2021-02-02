@@ -23,9 +23,9 @@
           <el-tag type="success" v-else-if="scope.row.cat_level === 1">二级</el-tag>
           <el-tag type="warning" v-else-if="scope.row.cat_level == 2">三级</el-tag>
         </template>
-        <template slot="operation">
+        <template slot="operation" slot-scope="scope">
           <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
-          <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
+          <el-button size="mini" type="danger" icon="el-icon-delete" @click="deleteCate(scope.row.cat_id)">删除</el-button>
         </template>
       </tree-table>
       <!-- 分页区域 -->
@@ -117,7 +117,7 @@ export default {
     // 获取商品列表
     async getCateList() {
       const { data: res } = await this.$http.get("categories", { params: this.queryList });
-      if (res.meta.status !== 200) return this.$message.error("获取用户列表失败!");
+      if (res.meta.status !== 200) return this.$message.error("获取商品列表失败!");
       this.cateList = res.data.result;
       this.total = res.data.total;
     },
@@ -170,6 +170,30 @@ export default {
       this.parentId = [];
       this.addCateForm.cat_pid = 0;
       this.addCateForm.cat_level = 0;
+    },
+    //删除商品
+    deleteCate(id) {
+        this.$confirm("此操作将永久删除商品, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(
+        async (resolve) => {
+          const { data: res } = await this.$http.delete(`categories/` + id);
+          if (res.meta.status !== 200) {
+            return this.$message.error(res.meta.msg);
+          }
+
+          this.getCateList();
+          this.$message.success("删除商品成功!");
+        },
+        (reject) => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        }
+      );
     },
   },
 };

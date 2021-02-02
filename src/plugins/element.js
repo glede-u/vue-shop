@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { Button } from "element-ui";
-import { Form, FormItem, Input, Message, Container, Header, Aside, Main, Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn, Switch, Tooltip, Pagination, Dialog, MessageBox, Tag, Tree, Cascader, Select, Option } from "element-ui";
+import { Form, FormItem, Input, Message, Container, Header, Aside, Main, Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn, Switch, Tooltip, Pagination, Dialog, MessageBox, Tag, Tree, Cascader, Select, Option, Alert, Tabs ,tabPane} from "element-ui";
 
 Vue.use(Button);
 Vue.use(Form);
@@ -29,6 +29,9 @@ Vue.use(Tree);
 Vue.use(Cascader);
 Vue.use(Select);
 Vue.use(Option);
+Vue.use(Alert);
+Vue.use(Tabs);
+Vue.use(tabPane);
 //提示消息方法
 Vue.prototype.$message = Message;
 //弹出确认框
