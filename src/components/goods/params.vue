@@ -184,7 +184,7 @@ export default {
       }
       const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, { params: { sel: this.activeName } });
       res.data.forEach((item) => {
-        item.attr_vals = item.attr_vals ? item.attr_vals.split(",") : [];
+        item.attr_vals = item.attr_vals.length>0 ? item.attr_vals.split(",") : [];
         item.inputVisible = false;
         item.inputValue = "";
       });   

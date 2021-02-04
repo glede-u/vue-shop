@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { Button } from "element-ui";
-import { Form, FormItem, Input, Message, Container, Header, Aside, Main, Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn, Switch, Tooltip, Pagination, Dialog, MessageBox, Tag, Tree, Cascader, Select, Option, Alert, Tabs ,tabPane} from "element-ui";
+import { Form, FormItem, Input, Message, Container, Header, Aside, Main, Menu, Submenu, MenuItem, Breadcrumb, BreadcrumbItem, Card, Row, Col, Table, TableColumn, Switch, Tooltip, Pagination, Dialog, MessageBox, Tag, Tree, Cascader, Select, Option, Alert, Tabs, tabPane, Steps, Step, CheckboxGroup, Checkbox, Upload } from "element-ui";
 
 Vue.use(Button);
 Vue.use(Form);
@@ -32,6 +32,11 @@ Vue.use(Option);
 Vue.use(Alert);
 Vue.use(Tabs);
 Vue.use(tabPane);
+Vue.use(Steps);
+Vue.use(Step);
+Vue.use(CheckboxGroup);
+Vue.use(Checkbox);
+Vue.use(Upload);
 //提示消息方法
 Vue.prototype.$message = Message;
 //弹出确认框

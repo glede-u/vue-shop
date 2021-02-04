@@ -177,7 +177,7 @@ export default {
       //所有的数据列表
       roleList: [],
       //分配角色的id
-      saveRoleId:''
+      saveRoleId: "",
     };
   },
   created() {
@@ -288,21 +288,20 @@ export default {
       this.roleDialogVisible = true;
     },
     //设置分配角色
-  async setRole(){
-      if(!this.saveRoleId){
+    async setRole() {
+      if (!this.saveRoleId) {
         return this.$message.error("请选择角色!");
       }
-      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`,{rid:this.saveRoleId});
+      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.saveRoleId });
       if (res.meta.status !== 200) return this.$message.error("获取角色列表失败!");
-       this.$message.success("分配角色成功!");
-       this.getUserList()
-        this.roleDialogVisible = false;
+      this.$message.success("分配角色成功!");
+      this.getUserList();
+      this.roleDialogVisible = false;
     },
     //关闭对话框清除saveRoleId的值
-    setRoleDialogClose(){
-      this.saveRoleId='',
-      this.userInfo={}
-    }
+    setRoleDialogClose() {
+      (this.saveRoleId = ""), (this.userInfo = {});
+    },
   },
 };
 </script>
