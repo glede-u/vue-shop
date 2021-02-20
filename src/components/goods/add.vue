@@ -51,19 +51,26 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="商品图片" name="3">
-            <el-upload  :action="uploadURL" :on-preview="handlePreview" :on-remove="handleRemove"  list-type="picture" :headers='headersObj'>
+            <el-upload :action="uploadURL" :on-preview="handlePreview" :on-remove="handleRemove" list-type="picture" :headers="headersObj" :on-success="handleSuccess">
               <el-button size="small" type="primary">点击上传</el-button>
-              
             </el-upload>
           </el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <quill-editor v-model="addform.goods_introduce" ></quill-editor>
+             <el-button type="primary" @click="handleAdd" class="btnAdd">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
+    <!-- 图片预览对话框 -->
+    <el-dialog title="图片预览" :visible.sync="previewDialogVisible" width="50%">
+      <img :src="previewPath" alt=""  class="previewIMG"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
 export default {
   name: "add",
 
@@ -77,7 +84,15 @@ export default {
         goods_weight: 0,
         goods_number: 0,
         goods_cat: [],
+        //图片信息
+        pics: [],
+        //文本描述信息
+        goods_introduce:'',
+        attrs:[]
+
       },
+      previewPath:'',
+      previewDialogVisible:false,
       //验证规则
       addformRules: {
         goods_name: [{ required: true, message: "请输入商品名称", trigger: "blur" }],
@@ -101,11 +116,11 @@ export default {
       // /静态属性列表
       onlyTableData: [],
       //图片上传地址
-      uploadURL:'http://127.0.0.1:8888/api/private/v1/upload',
+      uploadURL: "http://127.0.0.1:8888/api/private/v1/upload",
       //设置图片请求头参数
-      headersObj:{
-          Authorization:window.sessionStorage.token
-      }
+      headersObj: {
+        Authorization: window.sessionStorage.token,
+      },
     };
   },
   created() {
@@ -148,14 +163,66 @@ export default {
         if (res.meta.status !== 200) {
           return this.$message.error("获取静态属性列表失败!");
         }
-        console.log(res.data);
         this.onlyTableData = res.data;
       }
     },
     //处理图片预览
-    handlePreview(){},
+    handlePreview(file) {
+      this.previewPath=file.response.data.url;
+      this.previewDialogVisible=true
+    },
     //处理图片删除的操作
-    handleRemove(){}
+    handleRemove(file) {
+      const filePath = file.response.data.tmp_path;
+
+      this.addform.pics = this.addform.pics.filter((item) => {
+        return item.pic != filePath;
+      });
+      console.log(this.addform);
+    },
+    //照片上传成功
+    handleSuccess(response) {
+      const picInfo = { pic: response.data.tmp_path };
+      this.addform.pics.push(picInfo);
+      console.log(this.addform);
+    },
+    //添加商品
+    handleAdd(){
+      this.$refs.addformRef.validate(async (valid) => {
+        if (!valid) return this.$message.error("请填写必要项!");
+        // 执行添加的业务逻辑
+        // lodash   cloneDeep(obj)
+        const form = _.cloneDeep(this.addform)
+        form.goods_cat = form.goods_cat.join(',')
+        // 处理动态参数
+        this.manyTableData.forEach(item => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals.join(',')
+          }
+          this.addform.attrs.push(newInfo)
+        })
+        // 处理静态属性
+        this.onlyTableData.forEach(item => {
+          const newInfo = { attr_id: item.attr_id, attr_value: item.attr_vals }
+          this.addform.attrs.push(newInfo)
+        })
+        form.attrs = this.addform.attrs
+        // 发起请求添加商品
+        // 商品的名称，必须是唯一的
+        const { data: res } = await this.$http.post('goods', form)
+
+        if (res.meta.status !== 201) {
+          return this.$message.error('添加商品失败！')
+        }
+
+        this.$message.success('添加商品成功！')
+        this.$router.push('/goods')
+
+        
+      });
+    }
+    
   },
 };
 </script>
@@ -163,5 +230,11 @@ export default {
 <style lang="less" scoped>
 .el-checkbox {
   margin: 0 10px 0 0 !important;
+}
+.previewIMG{
+  width: 100%;
+}
+.btnAdd{
+  margin-top: 15px;
 }
 </style>

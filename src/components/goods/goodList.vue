@@ -39,6 +39,7 @@
        <!-- 分页区域 -->
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryList.pagenum" :page-sizes="[5, 10, 15, 20]" :page-size="queryList.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total" background> </el-pagination>
      </el-card>
+     
   </div>
 </template>
 
